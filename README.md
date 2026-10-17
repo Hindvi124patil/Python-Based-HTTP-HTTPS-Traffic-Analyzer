@@ -3,6 +3,13 @@
 ## 📌 Project Overview
 NetScope is a Python-based web application developed for the Computer Networks subject. It analyzes network traffic using Wireshark and TShark and presents packet details, protocol statistics, and traffic visualizations through an interactive dashboard.
 
+## 🔗 Project Links
+Try NetScope — HTTP/HTTPS Traffic Analyzer
+
+- 🌐 Live Website: https://python-based-http-https-traffic-analyzer.onrender.com/
+- 💻 GitHub Repository: https://github.com/Hindvi124patil/Python-Based-HTTP-HTTPS-Traffic-Analyzer
+
+Explore the live application online or visit the GitHub repository to view the source code, project files, and setup instructions.
 ## 🎯 Objectives
 - To analyze HTTP/HTTPS-related network traffic.
 - To identify source and destination IP addresses and protocols.

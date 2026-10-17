@@ -1,0 +1,14 @@
+Metric,Value
+Total Captured Packets,25
+Total Captured Bytes,9975
+Minimum Packet Size (Bytes),42
+Maximum Packet Size (Bytes),1420
+Mean Packet Size (Bytes),399.0
+Median Packet Size (Bytes),78.0
+Capture Duration,0.35s
+Ports Available,Yes
+Timestamps Available,Yes
+HTTP Packets,7
+HTTPS/TLS Packets,8
+QUIC Packets,3
+DNS Packets,4

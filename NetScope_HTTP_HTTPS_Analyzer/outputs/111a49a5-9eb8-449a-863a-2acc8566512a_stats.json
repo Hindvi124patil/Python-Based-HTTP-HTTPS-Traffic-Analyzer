@@ -1,0 +1,349 @@
+{
+  "is_empty": false,
+  "total_packets": 25,
+  "total_bytes": 9975,
+  "min_packet_size": 42,
+  "max_packet_size": 1420,
+  "mean_packet_size": 399.0,
+  "median_packet_size": 78.0,
+  "protocol_counts": {
+    "TCP": 9,
+    "DNS": 4,
+    "TLSv1.3": 4,
+    "QUIC": 3,
+    "HTTP": 2,
+    "ARP": 2,
+    "ICMP": 1
+  },
+  "protocol_percentages": {
+    "TCP": 36.0,
+    "DNS": 16.0,
+    "TLSv1.3": 16.0,
+    "QUIC": 12.0,
+    "HTTP": 8.0,
+    "ARP": 8.0,
+    "ICMP": 4.0
+  },
+  "protocol_bytes": {
+    "DNS": 354,
+    "TCP": 534,
+    "HTTP": 1688,
+    "TLSv1.3": 3857,
+    "QUIC": 3360,
+    "ARP": 84,
+    "ICMP": 98
+  },
+  "category_counts": {
+    "HTTPS/TLS": 8,
+    "HTTP": 7,
+    "DNS": 4,
+    "QUIC": 3,
+    "ARP": 2,
+    "ICMP": 1
+  },
+  "category_percentages": {
+    "HTTPS/TLS": 32.0,
+    "HTTP": 28.0,
+    "DNS": 16.0,
+    "QUIC": 12.0,
+    "ARP": 8.0,
+    "ICMP": 4.0
+  },
+  "category_bytes": {
+    "DNS": 354,
+    "HTTP": 1982,
+    "HTTPS/TLS": 4097,
+    "QUIC": 3360,
+    "ARP": 84,
+    "ICMP": 98
+  },
+  "verification_breakdown": {
+    "http_confirmed": 2,
+    "http_inferred": 5,
+    "https_confirmed": 4,
+    "https_inferred": 4,
+    "quic_confirmed": 3,
+    "quic_inferred": 0
+  },
+  "top_source_ips": [
+    {
+      "ip": "192.168.1.105",
+      "count": 15,
+      "bytes": 4239,
+      "percentage": 60.0
+    },
+    {
+      "ip": "93.184.216.34",
+      "count": 3,
+      "bytes": 1376,
+      "percentage": 12.0
+    },
+    {
+      "ip": "140.82.121.6",
+      "count": 3,
+      "bytes": 2866,
+      "percentage": 12.0
+    },
+    {
+      "ip": "8.8.8.8",
+      "count": 2,
+      "bytes": 202,
+      "percentage": 8.0
+    },
+    {
+      "ip": "142.250.190.46",
+      "count": 1,
+      "bytes": 1250,
+      "percentage": 4.0
+    },
+    {
+      "ip": "192.168.1.1",
+      "count": 1,
+      "bytes": 42,
+      "percentage": 4.0
+    }
+  ],
+  "top_destination_ips": [
+    {
+      "ip": "192.168.1.105",
+      "count": 10,
+      "bytes": 5736,
+      "percentage": 40.0
+    },
+    {
+      "ip": "140.82.121.6",
+      "count": 5,
+      "bytes": 1231,
+      "percentage": 20.0
+    },
+    {
+      "ip": "93.184.216.34",
+      "count": 4,
+      "bytes": 606,
+      "percentage": 16.0
+    },
+    {
+      "ip": "8.8.8.8",
+      "count": 2,
+      "bytes": 152,
+      "percentage": 8.0
+    },
+    {
+      "ip": "142.250.190.46",
+      "count": 2,
+      "bytes": 2110,
+      "percentage": 8.0
+    },
+    {
+      "ip": "192.168.1.1",
+      "count": 1,
+      "bytes": 42,
+      "percentage": 4.0
+    },
+    {
+      "ip": "1.1.1.1",
+      "count": 1,
+      "bytes": 98,
+      "percentage": 4.0
+    }
+  ],
+  "top_ip_pairs": [
+    {
+      "pair": "140.82.121.6 <-> 192.168.1.105",
+      "count": 8,
+      "bytes": 4097
+    },
+    {
+      "pair": "192.168.1.105 <-> 93.184.216.34",
+      "count": 7,
+      "bytes": 1982
+    },
+    {
+      "pair": "192.168.1.105 <-> 8.8.8.8",
+      "count": 4,
+      "bytes": 354
+    },
+    {
+      "pair": "142.250.190.46 <-> 192.168.1.105",
+      "count": 3,
+      "bytes": 3360
+    },
+    {
+      "pair": "192.168.1.1 <-> 192.168.1.105",
+      "count": 2,
+      "bytes": 84
+    },
+    {
+      "pair": "1.1.1.1 <-> 192.168.1.105",
+      "count": 1,
+      "bytes": 98
+    }
+  ],
+  "ports_available": true,
+  "top_source_ports": [
+    {
+      "port": 58900,
+      "service": "Dynamic / Private Port",
+      "count": 5,
+      "percentage": 22.73
+    },
+    {
+      "port": 54122,
+      "service": "Dynamic / Private Port",
+      "count": 4,
+      "percentage": 18.18
+    },
+    {
+      "port": 443,
+      "service": "HTTPS / TLS / QUIC",
+      "count": 4,
+      "percentage": 18.18
+    },
+    {
+      "port": 80,
+      "service": "HTTP (World Wide Web)",
+      "count": 3,
+      "percentage": 13.64
+    },
+    {
+      "port": 53,
+      "service": "DNS (Domain Name System)",
+      "count": 2,
+      "percentage": 9.09
+    },
+    {
+      "port": 56214,
+      "service": "Dynamic / Private Port",
+      "count": 2,
+      "percentage": 9.09
+    },
+    {
+      "port": 53120,
+      "service": "Dynamic / Private Port",
+      "count": 1,
+      "percentage": 4.55
+    },
+    {
+      "port": 53121,
+      "service": "Dynamic / Private Port",
+      "count": 1,
+      "percentage": 4.55
+    }
+  ],
+  "top_destination_ports": [
+    {
+      "port": 443,
+      "service": "HTTPS / TLS / QUIC",
+      "count": 7,
+      "percentage": 31.82
+    },
+    {
+      "port": 80,
+      "service": "HTTP (World Wide Web)",
+      "count": 4,
+      "percentage": 18.18
+    },
+    {
+      "port": 54122,
+      "service": "Dynamic / Private Port",
+      "count": 3,
+      "percentage": 13.64
+    },
+    {
+      "port": 58900,
+      "service": "Dynamic / Private Port",
+      "count": 3,
+      "percentage": 13.64
+    },
+    {
+      "port": 53,
+      "service": "DNS (Domain Name System)",
+      "count": 2,
+      "percentage": 9.09
+    },
+    {
+      "port": 53120,
+      "service": "Dynamic / Private Port",
+      "count": 1,
+      "percentage": 4.55
+    },
+    {
+      "port": 53121,
+      "service": "Dynamic / Private Port",
+      "count": 1,
+      "percentage": 4.55
+    },
+    {
+      "port": 56214,
+      "service": "Dynamic / Private Port",
+      "count": 1,
+      "percentage": 4.55
+    }
+  ],
+  "timestamps_available": true,
+  "start_time": "0.000000s",
+  "end_time": "0.350100s",
+  "duration_seconds": 0.35,
+  "duration_formatted": "0.35s",
+  "traffic_over_time": {
+    "labels": [
+      "+0.0s",
+      "+0.1s",
+      "+0.1s",
+      "+0.2s",
+      "+0.3s"
+    ],
+    "packet_counts": [
+      6,
+      5,
+      6,
+      3,
+      5
+    ],
+    "byte_counts": [
+      782,
+      1554,
+      2663,
+      2684,
+      2292
+    ]
+  },
+  "size_distribution": {
+    "labels": [
+      "< 128 B",
+      "128 - 511 B",
+      "512 - 1023 B",
+      "1024 - 1514 B",
+      "> 1514 B (Jumbo)"
+    ],
+    "counts": [
+      16,
+      1,
+      3,
+      5,
+      0
+    ],
+    "percentages": [
+      64.0,
+      4.0,
+      12.0,
+      20.0,
+      0.0
+    ]
+  },
+  "web_traffic_summary": {
+    "total_web_packets": 18,
+    "http_count": 7,
+    "https_count": 8,
+    "quic_count": 3,
+    "dns_count": 4,
+    "tls_domains": [
+      "api.github.com"
+    ],
+    "http_methods": {
+      "GET": 1
+    },
+    "encryption_note": "Security Notice: HTTPS and QUIC application payloads are encrypted using symmetric ciphers (e.g., AES-GCM, ChaCha20-Poly1305) negotiated via TLS handshake. In NetScope, protocol metadata, Server Name Indication (SNI), packet timing, and size can be inspected, but payload contents remain cryptographically protected without authorized TLS pre-master secret key logs."
+  },
+  "unavailable_fields": []
+}

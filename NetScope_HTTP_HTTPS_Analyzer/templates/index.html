@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NetScope — HTTP/HTTPS Traffic Analyzer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="{{ url_for('static', filename='js/chart.umd.min.js') }}"></script>
+</head>
+<body class="dark-theme">
+    <!-- Mobile Navigation Toggle Header -->
+    <header class="mobile-header">
+        <button id="mobileNavToggle" class="btn-icon" aria-label="Toggle Navigation">
+            <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" fill="none" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+        <div class="brand-title">
+            <span class="brand-icon">🌐</span>
+            <span class="brand-name">NetScope</span>
+        </div>
+        <div class="header-status-pill" id="mobileStatusPill">
+            <span class="status-dot"></span> Ready
+        </div>
+    </header>
+
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-brand">
+                <div class="brand-logo-wrap">
+                    <span class="brand-icon-lg">🌐</span>
+                </div>
+                <div>
+                    <h1 class="brand-title-text">NetScope</h1>
+                    <p class="brand-subtext">HTTP/HTTPS Traffic Analyzer</p>
+                </div>
+            </div>
+
+            <!-- Capture Status Badge in Sidebar -->
+            <div class="sidebar-status-box" id="sidebarStatusBox">
+                <div class="status-header">
+                    <span class="status-indicator-dot" id="statusDot"></span>
+                    <span class="status-label" id="statusLabel">No Capture Loaded</span>
+                </div>
+                <div class="status-details" id="statusDetails">Upload a .pcap or .csv file</div>
+                <div class="sample-badge hidden" id="sampleDataBadge">DEMO DATASET</div>
+            </div>
+
+            <nav class="sidebar-menu">
+                <a href="#overview" class="nav-item active" data-view="overview-view">
+                    <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                    <span>Overview Dashboard</span>
+                </a>
+                <a href="#upload" class="nav-item" data-view="upload-view">
+                    <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                    <span>Upload & Analyze</span>
+                </a>
+                <a href="#explorer" class="nav-item" data-view="explorer-view">
+                    <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+                    <span>Packet Explorer</span>
+                </a>
+                <a href="#ip-analysis" class="nav-item" data-view="ip-analysis-view">
+                    <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                    <span>IP Address Analysis</span>
+                </a>
+                <a href="#port-analysis" class="nav-item" data-view="port-analysis-view">
+                    <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+                    <span>Port & Transport</span>
+                </a>
+                <a href="#web-analysis" class="nav-item" data-view="web-analysis-view">
+                    <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    <span>HTTP / TLS / QUIC</span>
+                </a>
+                <a href="#protocols" class="nav-item" data-view="protocols-view">
+                    <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg>
+                    <span>Protocol Statistics</span>
+                </a>
+                <a href="#size-analysis" class="nav-item" data-view="size-analysis-view">
+                    <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                    <span>Packet Sizes (MTU)</span>
+                </a>
+                <a href="#time-analysis" class="nav-item" data-view="time-analysis-view">
+                    <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    <span>Traffic Over Time</span>
+                </a>
+                <a href="#reports" class="nav-item" data-view="reports-view">
+                    <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                    <span>Reports & Export</span>
+                </a>
+                <a href="#about" class="nav-item" data-view="about-view">
+                    <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                    <span>About & Objectives</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="tshark-engine-badge" id="tsharkPill">
+                    <span class="engine-dot {% if tshark.available %}engine-active{% else %}engine-inactive{% endif %}"></span>
+                    <span class="engine-text">{% if tshark.available %}TShark Ready{% else %}TShark Missing{% endif %}</span>
+                </div>
+                <div class="version-tag">Computer Networks Project</div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Top Action Header -->
+            <header class="top-action-bar">
+                <div class="view-header-title">
+                    <h2 id="currentViewHeading">Overview Dashboard</h2>
+                    <p class="view-subtext" id="currentViewSubtext">Real-time network traffic telemetry and packet analysis</p>
+                </div>
+                <div class="top-actions">
+                    <button class="btn btn-secondary" id="btnQuickSample" title="Load Sample Data">
+                        <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>
+                        <span>Load Sample</span>
+                    </button>
+                    <button class="btn btn-primary" id="btnQuickUpload" title="Upload PCAP or CSV">
+                        <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                        <span>Upload Capture</span>
+                    </button>
+                    <button class="btn btn-outline" id="btnPrintReport" title="Print Academic Summary Report">
+                        <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+                        <span>Print Report</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Sample Data Alert Banner -->
+            <div class="alert-banner warning-banner hidden" id="sampleDataAlert">
+                <div class="banner-icon">⚠️</div>
+                <div class="banner-content">
+                    <strong>Sample Dataset Active:</strong> You are currently viewing simulated demo traffic (HTTP, TLSv1.3, QUIC, DNS). This is labeled sample data for college demonstration. To inspect your own network packets, upload a Wireshark capture file (.pcap / .csv).
+                </div>
+                <button class="btn-close" id="btnCloseSampleAlert">&times;</button>
+            </div>
+
+            <!-- Global Toast / Alert -->
+            <div id="toastNotification" class="toast hidden"></div>
+
+            <!-- ============================================================ -->
+            <!-- VIEW 1: OVERVIEW DASHBOARD                                    -->
+            <!-- ============================================================ -->
+            <section id="overview-view" class="view-panel active">
+                <!-- KPI Summary Cards -->
+                <div class="metrics-grid">
+                    <div class="card metric-card">
+                        <div class="metric-icon-wrap bg-blue">
+                            <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" fill="none" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                        </div>
+                        <div class="metric-body">
+                            <span class="metric-title">Total Packets</span>
+                            <h3 class="metric-value" id="kpiTotalPackets">0</h3>
+                            <span class="metric-desc" id="kpiWebPackets">0 web packets (HTTP/TLS/QUIC)</span>
+                        </div>
+                    </div>
+
+                    <div class="card metric-card">
+                        <div class="metric-icon-wrap bg-cyan">
+                            <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" fill="none" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+                        </div>
+                        <div class="metric-body">
+                            <span class="metric-title">Captured Volume</span>
+                            <h3 class="metric-value" id="kpiTotalBytes">0 B</h3>
+                            <span class="metric-desc" id="kpiAvgSize">Mean: 0 B / Median: 0 B</span>
+                        </div>
+                    </div>
+
+                    <div class="card metric-card">
+                        <div class="metric-icon-wrap bg-indigo">
+                            <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" fill="none" stroke-width="2"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+                        </div>
+                        <div class="metric-body">
+                            <span class="metric-title">Protocols Detected</span>
+                            <h3 class="metric-value" id="kpiProtocolCount">0</h3>
+                            <span class="metric-desc" id="kpiTopProtocol">Dominant: None</span>
+                        </div>
+                    </div>
+
+                    <div class="card metric-card">
+                        <div class="metric-icon-wrap bg-emerald">
+                            <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        </div>
+                        <div class="metric-body">
+                            <span class="metric-title">Capture Duration</span>
+                            <h3 class="metric-value" id="kpiDuration">0.00s</h3>
+                            <span class="metric-desc" id="kpiDurationRange">Timestamps pending</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Row 1: Protocol Doughnut & Web Traffic Breakdown -->
+                <div class="grid-2-col">
+                    <div class="card chart-card">
+                        <div class="card-header">
+                            <div>
+                                <h3 class="card-title">Protocol Distribution</h3>
+                                <p class="card-subtext">Overall breakdown of network traffic protocols</p>
+                            </div>
+                            <span class="badge badge-info" id="badgeTotalProtocols">0 Protocols</span>
+                        </div>
+                        <div class="card-body chart-container">
+                            <canvas id="chartProtocolDoughnut"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="card chart-card">
+                        <div class="card-header">
+                            <div>
+                                <h3 class="card-title">Web Traffic Classification</h3>
+                                <p class="card-subtext">HTTP vs HTTPS/TLS vs QUIC (HTTP/3) vs DNS</p>
+                            </div>
+                            <span class="badge badge-purple" id="badgeWebTrafficShare">0% Web</span>
+                        </div>
+                        <div class="card-body chart-container">
+                            <canvas id="chartWebTrafficBar"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Row 2: Traffic Over Time & Packet Size Histogram -->
+                <div class="grid-2-col">
+                    <div class="card chart-card">
+                        <div class="card-header">
+                            <div>
+                                <h3 class="card-title">Traffic Activity Over Time</h3>
+                                <p class="card-subtext">Packet frequency and volume across capture timeline</p>
+                            </div>
+                            <span class="badge badge-emerald">Time Series</span>
+                        </div>
+                        <div class="card-body chart-container">
+                            <canvas id="chartTrafficTime"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="card chart-card">
+                        <div class="card-header">
+                            <div>
+                                <h3 class="card-title">Packet Size Distribution</h3>
+                                <p class="card-subtext">Ethernet MTU compliance and payload length histogram</p>
+                            </div>
+                            <span class="badge badge-blue">Payload Bins</span>
+                        </div>
+                        <div class="card-body chart-container">
+                            <canvas id="chartSizeHistogram"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Top Talkers Summary Cards -->
+                <div class="grid-2-col">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Top Source IP Addresses</h3>
+                            <span class="badge badge-outline">Top Talkers</span>
+                        </div>
+                        <div class="card-body table-responsive">
+                            <table class="data-table" id="tableOverviewSrcIP">
+                                <thead>
+                                    <tr>
+                                        <th>Source IP</th>
+                                        <th>Packets</th>
+                                        <th>Bytes</th>
+                                        <th>Share</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td colspan="4" class="text-center text-muted">No capture loaded.</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Top Destination IP Addresses</h3>
+                            <span class="badge badge-outline">Top Listeners</span>
+                        </div>
+                        <div class="card-body table-responsive">
+                            <table class="data-table" id="tableOverviewDstIP">
+                                <thead>
+                                    <tr>
+                                        <th>Destination IP</th>
+                                        <th>Packets</th>
+                                        <th>Bytes</th>
+                                        <th>Share</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td colspan="4" class="text-center text-muted">No capture loaded.</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============================================================ -->
+            <!-- VIEW 2: UPLOAD & ANALYZE                                      -->
+            <!-- ============================================================ -->
+            <section id="upload-view" class="view-panel">
+                <div class="upload-container">
+                    <!-- Dropzone Card -->
+                    <div class="card upload-card">
+                        <div class="card-header">
+                            <h3 class="card-title">Upload Packet Capture File</h3>
+                            <span class="badge badge-blue">PCAP • PCAPNG • CSV</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="dropzone" id="dropzone">
+                                <input type="file" id="fileInput" accept=".pcap,.pcapng,.cap,.csv" class="file-input-hidden">
+                                <div class="dropzone-content">
+                                    <div class="dropzone-icon">📁</div>
+                                    <h4>Drag & Drop your capture file here</h4>
+                                    <p class="dropzone-sub">or click to browse files from your computer</p>
+                                    <div class="supported-formats">
+                                        <span class="fmt-pill">.pcap</span>
+                                        <span class="fmt-pill">.pcapng</span>
+                                        <span class="fmt-pill">.csv (Wireshark Export)</span>
+                                    </div>
+                                    <p class="file-limits">Maximum file size: 50 MB</p>
+                                </div>
+                            </div>
+
+                            <!-- Selected File Info Bar -->
+                            <div class="selected-file-box hidden" id="selectedFileBox">
+                                <div class="file-info-group">
+                                    <span class="file-icon">📄</span>
+                                    <div>
+                                        <div class="file-name" id="selectedFileName">filename.pcap</div>
+                                        <div class="file-size" id="selectedFileSize">0 KB</div>
+                                    </div>
+                                </div>
+                                <div class="file-actions">
+                                    <button class="btn btn-primary" id="btnStartAnalysis">
+                                        <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                                        <span>Analyze Capture</span>
+                                    </button>
+                                    <button class="btn btn-outline" id="btnCancelFile">Remove</button>
+                                </div>
+                            </div>
+
+                            <!-- Upload Progress Bar -->
+                            <div class="progress-container hidden" id="uploadProgressContainer">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="uploadProgressFill" style="width: 0%"></div>
+                                </div>
+                                <div class="progress-text" id="uploadProgressText">Processing packets...</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Built-in Sample Datasets Card -->
+                    <div class="card sample-options-card">
+                        <div class="card-header">
+                            <h3 class="card-title">Built-in Academic Sample Datasets</h3>
+                            <span class="badge badge-warning">College Demo Ready</span>
+                        </div>
+                        <div class="card-body">
+                            <p class="text-secondary">
+                                For academic evaluation, live demonstrations, and viva questions, you can load NetScope's pre-packaged Wireshark traces without needing to run Wireshark first:
+                            </p>
+                            <div class="sample-btn-group">
+                                <button class="btn btn-secondary btn-sample-choice" data-format="csv">
+                                    <span class="sample-btn-icon">📊</span>
+                                    <div class="sample-btn-text">
+                                        <strong>Load Sample CSV Trace</strong>
+                                        <small>Wireshark-exported CSV with HTTP, TLSv1.3, QUIC, DNS (25 Packets)</small>
+                                    </div>
+                                </button>
+                                <button class="btn btn-secondary btn-sample-choice" data-format="pcap">
+                                    <span class="sample-btn-icon">📦</span>
+                                    <div class="sample-btn-text">
+                                        <strong>Load Sample Binary PCAP</strong>
+                                        <small>Real binary PCAP trace with TCP handshakes & HTTP/TLS (10 Packets)</small>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TShark Engine Status & Wireshark Instructions -->
+                    <div class="grid-2-col">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">TShark Engine Diagnostics</h3>
+                                <span class="badge {% if tshark.available %}badge-emerald{% else %}badge-rose{% endif %}">
+                                    {% if tshark.available %}Detected{% else %}Not in PATH{% endif %}
+                                </span>
+                            </div>
+                            <div class="card-body">
+                                <div class="tshark-status-row">
+                                    <strong>Status:</strong>
+                                    <span>{{ tshark.message }}</span>
+                                </div>
+                                {% if tshark.path %}
+                                <div class="tshark-status-row">
+                                    <strong>Executable:</strong>
+                                    <code class="code-pill">{{ tshark.path }}</code>
+                                </div>
+                                {% endif %}
+                                <div class="info-callout">
+                                    <strong>TShark Architecture:</strong> NetScope utilizes TShark (Wireshark's headless packet dissection tool) for fast deep-packet inspection of binary <code>.pcap</code> and <code>.pcapng</code> captures. If TShark is not detected, NetScope gracefully falls back to native Python Scapy dissection.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">How to Capture & Export in Wireshark</h3>
+                                <span class="badge badge-info">Step-by-Step</span>
+                            </div>
+                            <div class="card-body">
+                                <ol class="instructions-list">
+                                    <li>Open <strong>Wireshark</strong> on your Windows machine and choose your active Network Interface (e.g., <em>Wi-Fi</em> or <em>Ethernet</em>).</li>
+                                    <li>Apply capture filter: <code>tcp port 80 or tcp port 443 or udp port 53 or udp port 443</code>.</li>
+                                    <li>Open your web browser and visit web pages (e.g., <code>http://example.com</code> or <code>https://github.com</code>).</li>
+                                    <li>Stop packet capture in Wireshark (red square button).</li>
+                                    <li><strong>Save as PCAP/PCAPNG:</strong> Go to <em>File &rarr; Save As...</em> and save as <code>capture.pcapng</code>.</li>
+                                    <li><strong>Export as CSV:</strong> Go to <em>File &rarr; Export Packet Dissections &rarr; As CSV...</em> and save.</li>
+                                    <li>Upload the generated file into NetScope above!</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============================================================ -->
+            <!-- VIEW 3: PACKET EXPLORER TABLE                                 -->
+            <!-- ============================================================ -->
+            <section id="explorer-view" class="view-panel">
+                <div class="card">
+                    <div class="card-header filter-bar">
+                        <!-- Search Box -->
+                        <div class="search-input-wrap">
+                            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                            <input type="text" id="packetSearchInput" placeholder="Search IP, port, protocol, info, flags...">
+                        </div>
+
+                        <!-- Protocol Filter Dropdown -->
+                        <div class="filter-group">
+                            <label for="filterProtocol">Protocol:</label>
+                            <select id="filterProtocol" class="select-ctrl">
+                                <option value="ALL">All Protocols</option>
+                            </select>
+                        </div>
+
+                        <!-- Category Filter Dropdown -->
+                        <div class="filter-group">
+                            <label for="filterCategory">Category:</label>
+                            <select id="filterCategory" class="select-ctrl">
+                                <option value="ALL">All Categories</option>
+                                <option value="HTTP">HTTP (Cleartext)</option>
+                                <option value="HTTPS/TLS">HTTPS / TLS</option>
+                                <option value="QUIC">QUIC (HTTP/3)</option>
+                                <option value="DNS">DNS</option>
+                                <option value="TCP">TCP</option>
+                                <option value="UDP">UDP</option>
+                            </select>
+                        </div>
+
+                        <!-- Page Size Dropdown -->
+                        <div class="filter-group">
+                            <label for="pageSizeSelect">Show:</label>
+                            <select id="pageSizeSelect" class="select-ctrl">
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                            </select>
+                        </div>
+
+                        <button class="btn btn-outline" id="btnResetFilters">Reset Filters</button>
+                    </div>
+
+                    <!-- Active Filters / Count Summary -->
+                    <div class="table-meta-bar">
+                        <span id="filteredCountText">Showing 0 of 0 packets</span>
+                        <div class="table-legend">
+                            <span class="legend-item"><span class="badge badge-green">HTTP</span> Cleartext</span>
+                            <span class="legend-item"><span class="badge badge-purple">HTTPS/TLS</span> Encrypted</span>
+                            <span class="legend-item"><span class="badge badge-amber">QUIC</span> HTTP/3</span>
+                            <span class="legend-item"><span class="badge badge-cyan">DNS</span> Names</span>
+                        </div>
+                    </div>
+
+                    <!-- Packet Table -->
+                    <div class="card-body table-responsive">
+                        <table class="data-table packet-table" id="packetMainTable">
+                            <thead>
+                                <tr>
+                                    <th data-sort="no" class="sortable">No. <span class="sort-icon">↕</span></th>
+                                    <th data-sort="timestamp" class="sortable">Time <span class="sort-icon">↕</span></th>
+                                    <th data-sort="src_ip" class="sortable">Source IP <span class="sort-icon">↕</span></th>
+                                    <th>Port</th>
+                                    <th data-sort="dst_ip" class="sortable">Destination IP <span class="sort-icon">↕</span></th>
+                                    <th>Port</th>
+                                    <th data-sort="protocol" class="sortable">Protocol <span class="sort-icon">↕</span></th>
+                                    <th data-sort="length" class="sortable">Length <span class="sort-icon">↕</span></th>
+                                    <th>Flags</th>
+                                    <th>Category</th>
+                                    <th>Packet Info</th>
+                                    <th>Inspect</th>
+                                </tr>
+                            </thead>
+                            <tbody id="packetTableBody">
+                                <tr><td colspan="12" class="text-center text-muted">No packets loaded. Upload a capture to begin.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Pagination Controls -->
+                    <div class="card-footer pagination-footer">
+                        <div class="pagination-info" id="paginationInfo">Page 1 of 1</div>
+                        <div class="pagination-controls" id="paginationControls">
+                            <button class="btn-page" id="btnPageFirst">&laquo;</button>
+                            <button class="btn-page" id="btnPagePrev">&lsaquo;</button>
+                            <span id="pageNumbersWrap" class="page-numbers-wrap"></span>
+                            <button class="btn-page" id="btnPageNext">&rsaquo;</button>
+                            <button class="btn-page" id="btnPageLast">&raquo;</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============================================================ -->
+            <!-- VIEW 4: IP ADDRESS ANALYSIS                                   -->
+            <!-- ============================================================ -->
+            <section id="ip-analysis-view" class="view-panel">
+                <div class="grid-2-col">
+                    <div class="card chart-card">
+                        <div class="card-header">
+                            <div>
+                                <h3 class="card-title">Top Source IP Addresses</h3>
+                                <p class="card-subtext">Highest packet transmitters in network session</p>
+                            </div>
+                            <span class="badge badge-blue">Transmitters</span>
+                        </div>
+                        <div class="card-body chart-container">
+                            <canvas id="chartTopSrcIP"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="card chart-card">
+                        <div class="card-header">
+                            <div>
+                                <h3 class="card-title">Top Destination IP Addresses</h3>
+                                <p class="card-subtext">Highest packet receivers in network session</p>
+                            </div>
+                            <span class="badge badge-cyan">Receivers</span>
+                        </div>
+                        <div class="card-body chart-container">
+                            <canvas id="chartTopDstIP"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- IP Conversations / Network Pairs -->
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <h3 class="card-title">IP Conversations & Node Pairings</h3>
+                            <p class="card-subtext">Aggregated bidirectional communications between network endpoints</p>
+                        </div>
+                        <span class="badge badge-emerald" id="badgeTotalPairs">0 Conversations</span>
+                    </div>
+                    <div class="card-body table-responsive">
+                        <table class="data-table" id="tableIPPairs">
+                            <thead>
+                                <tr>
+                                    <th>Conversation Pair (IP 1 &harr; IP 2)</th>
+                                    <th>Total Packets</th>
+                                    <th>Total Bytes</th>
+                                    <th>Traffic Ratio</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td colspan="4" class="text-center text-muted">No conversation data available.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============================================================ -->
+            <!-- VIEW 5: PORT & TRANSPORT ANALYSIS                             -->
+            <!-- ============================================================ -->
+            <section id="port-analysis-view" class="view-panel">
+                <div class="grid-2-col">
+                    <div class="card chart-card">
+                        <div class="card-header">
+                            <div>
+                                <h3 class="card-title">Top Destination Communication Ports</h3>
+                                <p class="card-subtext">Target service endpoints and server ports</p>
+                            </div>
+                            <span class="badge badge-indigo">Server Ports</span>
+                        </div>
+                        <div class="card-body chart-container">
+                            <canvas id="chartTopDstPorts"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="card chart-card">
+                        <div class="card-header">
+                            <div>
+                                <h3 class="card-title">Top Source Communication Ports</h3>
+                                <p class="card-subtext">Client ephemeral ports and origin endpoints</p>
+                            </div>
+                            <span class="badge badge-purple">Client Ports</span>
+                        </div>
+                        <div class="card-body chart-container">
+                            <canvas id="chartTopSrcPorts"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Port Breakdown Table -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Well-Known Port & Service Mapping</h3>
+                        <span class="badge badge-outline">IANA Port Standards</span>
+                    </div>
+                    <div class="card-body table-responsive">
+                        <table class="data-table" id="tablePortDetails">
+                            <thead>
+                                <tr>
+                                    <th>Port Number</th>
+                                    <th>Identified Service</th>
+                                    <th>Direction</th>
+                                    <th>Packets</th>
+                                    <th>Percentage</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td colspan="5" class="text-center text-muted">No port information extracted.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============================================================ -->
+            <!-- VIEW 6: HTTP / HTTPS / TLS / QUIC ANALYSIS                   -->
+            <!-- ============================================================ -->
+            <section id="web-analysis-view" class="view-panel">
+                <!-- Academic Verification Breakdown -->
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <h3 class="card-title">Protocol Identification & Verification Matrix</h3>
+                            <p class="card-subtext">Distinguishing protocol-dissected packets from port-inferred packets</p>
+                        </div>
+                        <span class="badge badge-purple">Academic Integrity</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="verification-grid">
+                            <div class="verif-box">
+                                <h4>HTTP Traffic (Port 80)</h4>
+                                <div class="verif-stat">
+                                    <span class="verif-num" id="verifHttpConfirmed">0</span>
+                                    <span class="verif-tag badge badge-green">Dissected & Verified</span>
+                                </div>
+                                <div class="verif-stat">
+                                    <span class="verif-num" id="verifHttpInferred">0</span>
+                                    <span class="verif-tag badge badge-outline">Port-Inferred (TCP 80)</span>
+                                </div>
+                            </div>
+
+                            <div class="verif-box">
+                                <h4>HTTPS / TLS Traffic (Port 443)</h4>
+                                <div class="verif-stat">
+                                    <span class="verif-num" id="verifHttpsConfirmed">0</span>
+                                    <span class="verif-tag badge badge-purple">Dissected & Verified</span>
+                                </div>
+                                <div class="verif-stat">
+                                    <span class="verif-num" id="verifHttpsInferred">0</span>
+                                    <span class="verif-tag badge badge-outline">Port-Inferred (TCP 443)</span>
+                                </div>
+                            </div>
+
+                            <div class="verif-box">
+                                <h4>QUIC / HTTP/3 (UDP 443)</h4>
+                                <div class="verif-stat">
+                                    <span class="verif-num" id="verifQuicConfirmed">0</span>
+                                    <span class="verif-tag badge badge-amber">Dissected & Verified</span>
+                                </div>
+                                <div class="verif-stat">
+                                    <span class="verif-num" id="verifQuicInferred">0</span>
+                                    <span class="verif-tag badge badge-outline">Port-Inferred (UDP 443)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Deep Dive: TLS Domains and HTTP Methods -->
+                <div class="grid-2-col">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">TLS Server Name Indication (SNI)</h3>
+                            <span class="badge badge-indigo">Domain Names</span>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-subtext mb-2">Hostnames extracted from unencrypted TLS Client Hello handshakes:</p>
+                            <ul class="sni-list" id="sniList">
+                                <li class="text-muted">No TLS SNI records detected in capture.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">HTTP Request Methods</h3>
+                            <span class="badge badge-green">REST / Web</span>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-subtext mb-2">Detected HTTP verbs from cleartext web requests:</p>
+                            <div class="http-methods-grid" id="httpMethodsGrid">
+                                <div class="text-muted">No cleartext HTTP request verbs found.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cryptography & Payload Security Explanation -->
+                <div class="card security-card">
+                    <div class="card-header">
+                        <div class="flex-align">
+                            <span class="sec-icon">🔒</span>
+                            <div>
+                                <h3 class="card-title">Network Security & Encryption Explanation</h3>
+                                <p class="card-subtext">Understanding why HTTPS and QUIC application data cannot be read in plaintext</p>
+                            </div>
+                        </div>
+                        <span class="badge badge-purple">RFC 8446 • TLS 1.3</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="security-explanation-body">
+                            <p>
+                                In modern computer networks, HTTPS utilizes <strong>Transport Layer Security (TLS 1.2 / TLS 1.3)</strong>, while HTTP/3 operates over <strong>QUIC (UDP 443)</strong> with integrated TLS encryption. During packet capture:
+                            </p>
+                            <div class="security-points-grid">
+                                <div class="sec-point">
+                                    <span class="point-badge visible">Visible Metadata</span>
+                                    <ul>
+                                        <li>Ethernet MAC addresses & IP addresses</li>
+                                        <li>TCP & UDP communication ports (e.g., 443, 80)</li>
+                                        <li>Packet lengths, timing, and sequence numbers</li>
+                                        <li>TLS Client Hello: Cipher suites & Server Name Indication (SNI)</li>
+                                    </ul>
+                                </div>
+                                <div class="sec-point">
+                                    <span class="point-badge encrypted">Protected / Encrypted</span>
+                                    <ul>
+                                        <li>HTTP Request URLs, Paths, and Query strings</li>
+                                        <li>HTTP Headers (Cookies, Authorization tokens)</li>
+                                        <li>HTTP Request & Response Body (HTML, JSON, Images)</li>
+                                        <li>Session Keys (symmetric AES-256-GCM / ChaCha20)</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="academic-note-box mt-3">
+                                <strong>Academic Viva Note:</strong> NetScope strictly adheres to academic principles and computer networking ethics. It analyzes network layer packets, transport handshakes, and protocol flow without attempting unauthorized cryptographic decryption. To inspect decrypted HTTPS payload in a laboratory setting, one must supply session keys generated via the <code>SSLKEYLOGFILE</code> environment variable.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============================================================ -->
+            <!-- VIEW 7: PROTOCOL STATISTICS                                   -->
+            <!-- ============================================================ -->
+            <section id="protocols-view" class="view-panel">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Comprehensive Protocol Metrics Table</h3>
+                        <span class="badge badge-blue">Dissected Protocols</span>
+                    </div>
+                    <div class="card-body table-responsive">
+                        <table class="data-table" id="tableProtocolStats">
+                            <thead>
+                                <tr>
+                                    <th>Protocol Name</th>
+                                    <th>Traffic Category</th>
+                                    <th>Packet Count</th>
+                                    <th>Percentage (%)</th>
+                                    <th>Total Data Volume (Bytes)</th>
+                                    <th>Avg Packet Size</th>
+                                    <th>Encryption Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td colspan="7" class="text-center text-muted">No protocol data available.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============================================================ -->
+            <!-- VIEW 8: PACKET SIZES (MTU)                                    -->
+            <!-- ============================================================ -->
+            <section id="size-analysis-view" class="view-panel">
+                <div class="metrics-grid">
+                    <div class="card metric-card">
+                        <div class="metric-icon-wrap bg-blue">
+                            <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" fill="none" stroke-width="2"><polyline points="4 14 10 14 10 20"/><polyline points="20 10 14 10 14 4"/><line x1="14" y1="10" x2="21" y2="3"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+                        </div>
+                        <div class="metric-body">
+                            <span class="metric-title">Minimum Packet Size</span>
+                            <h3 class="metric-value" id="sizeMin">0 B</h3>
+                            <span class="metric-desc">Smallest captured frame</span>
+                        </div>
+                    </div>
+
+                    <div class="card metric-card">
+                        <div class="metric-icon-wrap bg-cyan">
+                            <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" fill="none" stroke-width="2"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+                        </div>
+                        <div class="metric-body">
+                            <span class="metric-title">Maximum Packet Size</span>
+                            <h3 class="metric-value" id="sizeMax">0 B</h3>
+                            <span class="metric-desc">Standard Ethernet MTU: 1514 B</span>
+                        </div>
+                    </div>
+
+                    <div class="card metric-card">
+                        <div class="metric-icon-wrap bg-indigo">
+                            <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                        </div>
+                        <div class="metric-body">
+                            <span class="metric-title">Mean Packet Size</span>
+                            <h3 class="metric-value" id="sizeMean">0.00 B</h3>
+                            <span class="metric-desc">Arithmetic average</span>
+                        </div>
+                    </div>
+
+                    <div class="card metric-card">
+                        <div class="metric-icon-wrap bg-emerald">
+                            <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" fill="none" stroke-width="2"><line x1="12" y1="2" x2="12" y2="22"/><line x1="17" y1="5" x2="17" y2="19"/><line x1="7" y1="9" x2="7" y2="15"/></svg>
+                        </div>
+                        <div class="metric-body">
+                            <span class="metric-title">Median Packet Size</span>
+                            <h3 class="metric-value" id="sizeMedian">0.00 B</h3>
+                            <span class="metric-desc">50th percentile distribution</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Histogram Breakdown Table -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Frame Size Distribution Table</h3>
+                        <span class="badge badge-outline">Standard Bins</span>
+                    </div>
+                    <div class="card-body table-responsive">
+                        <table class="data-table" id="tableSizeBins">
+                            <thead>
+                                <tr>
+                                    <th>Packet Size Range (Bytes)</th>
+                                    <th>Packet Count</th>
+                                    <th>Percentage (%)</th>
+                                    <th>Typical Content</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>&lt; 128 Bytes</td><td id="bin1Count">0</td><td id="bin1Pct">0%</td><td>TCP ACKs, SYN, FIN, ARP, DNS queries</td></tr>
+                                <tr><td>128 - 511 Bytes</td><td id="bin2Count">0</td><td id="bin2Pct">0%</td><td>HTTP GET requests, DNS responses, TLS Client Hello</td></tr>
+                                <tr><td>512 - 1023 Bytes</td><td id="bin3Count">0</td><td id="bin3Pct">0%</td><td>TLS Handshakes, Small HTTP responses, QUIC packets</td></tr>
+                                <tr><td>1024 - 1514 Bytes</td><td id="bin4Count">0</td><td id="bin4Pct">0%</td><td>Full Ethernet MTU payload, TLS Application Data, Large HTTP transfers</td></tr>
+                                <tr><td>&gt; 1514 Bytes (Jumbo)</td><td id="bin5Count">0</td><td id="bin5Pct">0%</td><td>TCP Segment Offloading (TSO) / Jumbo Frames</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============================================================ -->
+            <!-- VIEW 9: TIME SERIES TRAFFIC                                   -->
+            <!-- ============================================================ -->
+            <section id="time-analysis-view" class="view-panel">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Timeline & Capture Metrics</h3>
+                        <span class="badge badge-emerald">Temporal Analysis</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="metrics-grid">
+                            <div class="card metric-card">
+                                <div class="metric-body">
+                                    <span class="metric-title">First Packet Timestamp</span>
+                                    <h4 class="metric-value text-base" id="timeStart">N/A</h4>
+                                </div>
+                            </div>
+                            <div class="card metric-card">
+                                <div class="metric-body">
+                                    <span class="metric-title">Last Packet Timestamp</span>
+                                    <h4 class="metric-value text-base" id="timeEnd">N/A</h4>
+                                </div>
+                            </div>
+                            <div class="card metric-card">
+                                <div class="metric-body">
+                                    <span class="metric-title">Session Elapsed Duration</span>
+                                    <h4 class="metric-value text-base" id="timeDuration">0.00s</h4>
+                                </div>
+                            </div>
+                            <div class="card metric-card">
+                                <div class="metric-body">
+                                    <span class="metric-title">Average Packet Rate</span>
+                                    <h4 class="metric-value text-base" id="timePktRate">0.0 pkts/sec</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============================================================ -->
+            <!-- VIEW 10: REPORTS & EXPORT                                     -->
+            <!-- ============================================================ -->
+            <section id="reports-view" class="view-panel">
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <h3 class="card-title">Exportable Network Analysis Reports</h3>
+                            <p class="card-subtext">Download structured data for academic documentation, laboratory submissions, or grading</p>
+                        </div>
+                        <span class="badge badge-blue">Deliverables</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="export-cards-grid">
+                            <div class="export-card">
+                                <div class="export-icon">📑</div>
+                                <h4>Analyzed Packets CSV</h4>
+                                <p>Complete tabular dataset of all parsed packets including classified categories, flags, and notes.</p>
+                                <a href="/api/export/csv" class="btn btn-primary" download>
+                                    <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                                    <span>Download Packets CSV</span>
+                                </a>
+                            </div>
+
+                            <div class="export-card">
+                                <div class="export-icon">📊</div>
+                                <h4>Statistical Metrics CSV</h4>
+                                <p>Summary metrics table containing totals, packet size averages, duration, and protocol counts.</p>
+                                <a href="/api/export/summary-csv" class="btn btn-secondary" download>
+                                    <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                                    <span>Download Stats CSV</span>
+                                </a>
+                            </div>
+
+                            <div class="export-card">
+                                <div class="export-icon">🗄️</div>
+                                <h4>Full JSON Telemetry</h4>
+                                <p>Machine-readable JSON schema containing all aggregations, chart time-series points, and talkers.</p>
+                                <a href="/api/export/summary-json" class="btn btn-outline" download>
+                                    <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                                    <span>Download JSON Report</span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Unavailable Fields Checklist -->
+                        <div class="mt-4">
+                            <h4 class="mb-2">Data Quality & Unavailable Fields Audit:</h4>
+                            <div class="unavailable-box" id="unavailableBox">
+                                <ul id="unavailableList">
+                                    <li class="text-muted">No capture loaded to audit.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============================================================ -->
+            <!-- VIEW 11: ABOUT & OBJECTIVES                                   -->
+            <!-- ============================================================ -->
+            <section id="about-view" class="view-panel">
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <h3 class="card-title">About NetScope — HTTP/HTTPS Traffic Analyzer</h3>
+                            <p class="card-subtext">Computer Networks Academic Project • Department of Computer Engineering</p>
+                        </div>
+                        <span class="badge badge-emerald">5 Objectives Verified</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="about-section">
+                            <h4>Project Abstract</h4>
+                            <p>
+                                <strong>NetScope</strong> is a comprehensive, functional, beginner-friendly Computer Networks academic tool designed to inspect, dissect, and visualize modern Web traffic. Built with Python 3, Flask, pandas, numpy, and Chart.js, NetScope processes both binary packet captures (PCAP/PCAPNG) using Wireshark's TShark engine and Wireshark-exported CSV traces. It provides clear insights into cleartext HTTP (TCP 80), encrypted HTTPS / TLS (TCP 443), and next-generation QUIC / HTTP/3 (UDP 443) protocols.
+                            </p>
+                        </div>
+
+                        <div class="about-section">
+                            <h4>Five Core Academic Objectives & Verification Matrix</h4>
+                            <div class="objectives-table-wrap">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Required Objective</th>
+                                            <th>Implementation in NetScope</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>Obj 1</strong></td>
+                                            <td>Develop a Python program to analyze web traffic.</td>
+                                            <td>Backend Python engine (<code>traffic_analyzer.py</code>) with Flask REST API and modular dissection logic.</td>
+                                            <td><span class="badge badge-emerald">✓ Satisfied</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Obj 2</strong></td>
+                                            <td>Capture HTTP/HTTPS-related packets using Wireshark.</td>
+                                            <td>Native integration with Wireshark PCAP, PCAPNG, and CSV exports; built-in TShark CLI detection.</td>
+                                            <td><span class="badge badge-emerald">✓ Satisfied</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Obj 3</strong></td>
+                                            <td>Identify source and destination IP addresses and communication ports.</td>
+                                            <td>Extraction of IPv4/IPv6 source/destination endpoints and TCP/UDP communication ports with IANA registry mapping.</td>
+                                            <td><span class="badge badge-emerald">✓ Satisfied</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Obj 4</strong></td>
+                                            <td>Analyze packet size, protocols, and packet transmission timestamps.</td>
+                                            <td>NumPy-based size metrics (min, max, mean, median, histogram), Wireshark protocol dissection, and temporal duration.</td>
+                                            <td><span class="badge badge-emerald">✓ Satisfied</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Obj 5</strong></td>
+                                            <td>Calculate traffic statistics and display results using tables and graphs.</td>
+                                            <td>Chart.js interactive visualizations (doughnut, histograms, bars, time series) and paginated, searchable tables.</td>
+                                            <td><span class="badge badge-emerald">✓ Satisfied</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="about-section">
+                            <h4>System Architecture</h4>
+                            <div class="architecture-diagram-card">
+                                <div class="arch-flow">
+                                    <div class="arch-node">
+                                        <div class="arch-title">Input Sources</div>
+                                        <div class="arch-desc">.pcap • .pcapng • .csv</div>
+                                    </div>
+                                    <div class="arch-arrow">&rarr;</div>
+                                    <div class="arch-node">
+                                        <div class="arch-title">Dissection Layer</div>
+                                        <div class="arch-desc">TShark CLI / Scapy / pandas</div>
+                                    </div>
+                                    <div class="arch-arrow">&rarr;</div>
+                                    <div class="arch-node">
+                                        <div class="arch-title">Analytics Engine</div>
+                                        <div class="arch-desc">NumPy • pandas • Aggregations</div>
+                                    </div>
+                                    <div class="arch-arrow">&rarr;</div>
+                                    <div class="arch-node">
+                                        <div class="arch-title">Flask REST Backend</div>
+                                        <div class="arch-desc">API Endpoints • Caching • Exports</div>
+                                    </div>
+                                    <div class="arch-arrow">&rarr;</div>
+                                    <div class="arch-node">
+                                        <div class="arch-title">Modern Web UI</div>
+                                        <div class="arch-desc">HTML5 • CSS3 • Chart.js SPA</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Packet Inspector Modal / Drawer -->
+    <div class="modal-backdrop hidden" id="packetModal">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <div class="flex-align">
+                    <span class="modal-icon">🔍</span>
+                    <div>
+                        <h3 class="modal-title" id="modalPacketTitle">Packet Inspector #0</h3>
+                        <p class="modal-subtext" id="modalPacketSubtitle">Detailed Protocol Breakdown</p>
+                    </div>
+                </div>
+                <button class="btn-close" id="btnCloseModal">&times;</button>
+            </div>
+            <div class="modal-body" id="modalPacketBody">
+                <!-- Injected via JavaScript -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="btnModalCloseAction">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,476 @@
+{
+  "is_empty": false,
+  "total_packets": 446,
+  "total_bytes": 256138,
+  "min_packet_size": 42,
+  "max_packet_size": 1374,
+  "mean_packet_size": 574.3,
+  "median_packet_size": 154.0,
+  "protocol_counts": {
+    "TCP": 283,
+    "TLSv1.2": 48,
+    "TLSv1.3": 41,
+    "DNS": 38,
+    "QUIC": 20,
+    "SSL": 6,
+    "UDP": 2,
+    "ARP": 2,
+    "HTTP": 2,
+    "OCSP": 2,
+    "ICMPv6": 2
+  },
+  "protocol_percentages": {
+    "TCP": 63.45,
+    "TLSv1.2": 10.76,
+    "TLSv1.3": 9.19,
+    "DNS": 8.52,
+    "QUIC": 4.48,
+    "SSL": 1.35,
+    "UDP": 0.45,
+    "ARP": 0.45,
+    "HTTP": 0.45,
+    "OCSP": 0.45,
+    "ICMPv6": 0.45
+  },
+  "protocol_bytes": {
+    "TLSv1.2": 27325,
+    "TCP": 171384,
+    "DNS": 6049,
+    "SSL": 5606,
+    "TLSv1.3": 32735,
+    "QUIC": 10137,
+    "UDP": 178,
+    "ARP": 84,
+    "HTTP": 633,
+    "OCSP": 1835,
+    "ICMPv6": 172
+  },
+  "category_counts": {
+    "HTTPS/TLS": 318,
+    "TCP": 50,
+    "DNS": 38,
+    "QUIC": 21,
+    "HTTP": 13,
+    "ARP": 2,
+    "OCSP": 2,
+    "ICMPV6": 2
+  },
+  "category_percentages": {
+    "HTTPS/TLS": 71.3,
+    "TCP": 11.21,
+    "DNS": 8.52,
+    "QUIC": 4.71,
+    "HTTP": 2.91,
+    "ARP": 0.45,
+    "OCSP": 0.45,
+    "ICMPV6": 0.45
+  },
+  "category_bytes": {
+    "HTTPS/TLS": 222129,
+    "TCP": 14071,
+    "DNS": 6049,
+    "QUIC": 9023,
+    "ARP": 84,
+    "HTTP": 2775,
+    "OCSP": 1835,
+    "ICMPV6": 172
+  },
+  "verification_breakdown": {
+    "http_confirmed": 2,
+    "http_inferred": 11,
+    "https_confirmed": 96,
+    "https_inferred": 222,
+    "quic_confirmed": 19,
+    "quic_inferred": 2
+  },
+  "top_source_ips": [
+    {
+      "ip": "2409:40c2:641b:275e:f974:f025:f249:f2d5",
+      "count": 157,
+      "bytes": 39846,
+      "percentage": 35.2
+    },
+    {
+      "ip": "2603:1061:14:83::1",
+      "count": 78,
+      "bytes": 96792,
+      "percentage": 17.49
+    },
+    {
+      "ip": "2a03:2880:f324:120:face:b00c:0:167",
+      "count": 54,
+      "bytes": 20905,
+      "percentage": 12.11
+    },
+    {
+      "ip": "64:ff9b::d6b:8b0b",
+      "count": 36,
+      "bytes": 38274,
+      "percentage": 8.07
+    },
+    {
+      "ip": "64:ff9b::14be:9227",
+      "count": 28,
+      "bytes": 24468,
+      "percentage": 6.28
+    },
+    {
+      "ip": "64:ff9b::8795:ad45",
+      "count": 18,
+      "bytes": 14074,
+      "percentage": 4.04
+    },
+    {
+      "ip": "10.25.44.66",
+      "count": 17,
+      "bytes": 1374,
+      "percentage": 3.81
+    },
+    {
+      "ip": "10.25.44.125",
+      "count": 17,
+      "bytes": 3647,
+      "percentage": 3.81
+    },
+    {
+      "ip": "2001:4860:4844:400::",
+      "count": 13,
+      "bytes": 10885,
+      "percentage": 2.91
+    },
+    {
+      "ip": "2606:4700:8ca1:d8b7:9ad7:1095:ccf5:ac50",
+      "count": 6,
+      "bytes": 516,
+      "percentage": 1.35
+    }
+  ],
+  "top_destination_ips": [
+    {
+      "ip": "2409:40c2:641b:275e:f974:f025:f249:f2d5",
+      "count": 253,
+      "bytes": 211187,
+      "percentage": 56.73
+    },
+    {
+      "ip": "2a03:2880:f324:120:face:b00c:0:167",
+      "count": 41,
+      "bytes": 12302,
+      "percentage": 9.19
+    },
+    {
+      "ip": "2603:1061:14:83::1",
+      "count": 26,
+      "bytes": 4466,
+      "percentage": 5.83
+    },
+    {
+      "ip": "64:ff9b::14be:9227",
+      "count": 24,
+      "bytes": 9261,
+      "percentage": 5.38
+    },
+    {
+      "ip": "10.25.44.125",
+      "count": 17,
+      "bytes": 1374,
+      "percentage": 3.81
+    },
+    {
+      "ip": "10.25.44.66",
+      "count": 17,
+      "bytes": 3647,
+      "percentage": 3.81
+    },
+    {
+      "ip": "64:ff9b::8795:ad45",
+      "count": 14,
+      "bytes": 5119,
+      "percentage": 3.14
+    },
+    {
+      "ip": "64:ff9b::d6b:8b0b",
+      "count": 11,
+      "bytes": 3704,
+      "percentage": 2.47
+    },
+    {
+      "ip": "2603:1046:c04:104b::2",
+      "count": 11,
+      "bytes": 814,
+      "percentage": 2.47
+    },
+    {
+      "ip": "2001:4860:4844:400::",
+      "count": 6,
+      "bytes": 1603,
+      "percentage": 1.35
+    }
+  ],
+  "top_ip_pairs": [
+    {
+      "pair": "2409:40c2:641b:275e:f974:f025:f249:f2d5 <-> 2603:1061:14:83::1",
+      "count": 104,
+      "bytes": 101258
+    },
+    {
+      "pair": "2409:40c2:641b:275e:f974:f025:f249:f2d5 <-> 2a03:2880:f324:120:face:b00c:0:167",
+      "count": 95,
+      "bytes": 33207
+    },
+    {
+      "pair": "2409:40c2:641b:275e:f974:f025:f249:f2d5 <-> 64:ff9b::14be:9227",
+      "count": 52,
+      "bytes": 33729
+    },
+    {
+      "pair": "2409:40c2:641b:275e:f974:f025:f249:f2d5 <-> 64:ff9b::d6b:8b0b",
+      "count": 47,
+      "bytes": 41978
+    },
+    {
+      "pair": "10.25.44.125 <-> 10.25.44.66",
+      "count": 34,
+      "bytes": 5021
+    },
+    {
+      "pair": "2409:40c2:641b:275e:f974:f025:f249:f2d5 <-> 64:ff9b::8795:ad45",
+      "count": 32,
+      "bytes": 19193
+    },
+    {
+      "pair": "2001:4860:4844:400:: <-> 2409:40c2:641b:275e:f974:f025:f249:f2d5",
+      "count": 19,
+      "bytes": 12488
+    },
+    {
+      "pair": "2409:40c2:641b:275e:f974:f025:f249:f2d5 <-> 2603:1046:c04:104b::2",
+      "count": 11,
+      "bytes": 814
+    },
+    {
+      "pair": "2409:40c2:641b:275e:f974:f025:f249:f2d5 <-> 2606:4700:8ca1:d8b7:9ad7:1095:ccf5:ac50",
+      "count": 9,
+      "bytes": 822
+    },
+    {
+      "pair": "2409:40c2:641b:275e:f974:f025:f249:f2d5 <-> 64:ff9b::cc4f:c5cb",
+      "count": 8,
+      "bytes": 3035
+    }
+  ],
+  "ports_available": true,
+  "top_source_ports": [
+    {
+      "port": 443,
+      "service": "HTTPS / TLS / QUIC",
+      "count": 215,
+      "percentage": 48.64
+    },
+    {
+      "port": 5222,
+      "service": "Dynamic / Private Port",
+      "count": 27,
+      "percentage": 6.11
+    },
+    {
+      "port": 64157,
+      "service": "Dynamic / Private Port",
+      "count": 26,
+      "percentage": 5.88
+    },
+    {
+      "port": 53,
+      "service": "DNS (Domain Name System)",
+      "count": 19,
+      "percentage": 4.3
+    },
+    {
+      "port": 64158,
+      "service": "Dynamic / Private Port",
+      "count": 16,
+      "percentage": 3.62
+    },
+    {
+      "port": 64160,
+      "service": "Dynamic / Private Port",
+      "count": 14,
+      "percentage": 3.17
+    },
+    {
+      "port": 52173,
+      "service": "Dynamic / Private Port",
+      "count": 13,
+      "percentage": 2.94
+    },
+    {
+      "port": 51091,
+      "service": "Dynamic / Private Port",
+      "count": 12,
+      "percentage": 2.71
+    },
+    {
+      "port": 64159,
+      "service": "Dynamic / Private Port",
+      "count": 11,
+      "percentage": 2.49
+    },
+    {
+      "port": 54061,
+      "service": "Dynamic / Private Port",
+      "count": 8,
+      "percentage": 1.81
+    }
+  ],
+  "top_destination_ports": [
+    {
+      "port": 443,
+      "service": "HTTPS / TLS / QUIC",
+      "count": 124,
+      "percentage": 28.05
+    },
+    {
+      "port": 64157,
+      "service": "Dynamic / Private Port",
+      "count": 78,
+      "percentage": 17.65
+    },
+    {
+      "port": 64159,
+      "service": "Dynamic / Private Port",
+      "count": 36,
+      "percentage": 8.14
+    },
+    {
+      "port": 64158,
+      "service": "Dynamic / Private Port",
+      "count": 24,
+      "percentage": 5.43
+    },
+    {
+      "port": 5222,
+      "service": "Dynamic / Private Port",
+      "count": 21,
+      "percentage": 4.75
+    },
+    {
+      "port": 53,
+      "service": "DNS (Domain Name System)",
+      "count": 19,
+      "percentage": 4.3
+    },
+    {
+      "port": 64160,
+      "service": "Dynamic / Private Port",
+      "count": 18,
+      "percentage": 4.07
+    },
+    {
+      "port": 52173,
+      "service": "Dynamic / Private Port",
+      "count": 16,
+      "percentage": 3.62
+    },
+    {
+      "port": 51091,
+      "service": "Dynamic / Private Port",
+      "count": 15,
+      "percentage": 3.39
+    },
+    {
+      "port": 49686,
+      "service": "Dynamic / Private Port",
+      "count": 13,
+      "percentage": 2.94
+    }
+  ],
+  "timestamps_available": true,
+  "start_time": "1792239370.768230s",
+  "end_time": "1792239382.741268s",
+  "duration_seconds": 11.973,
+  "duration_formatted": "11.97s",
+  "traffic_over_time": {
+    "labels": [
+      "+0.0s",
+      "+1.0s",
+      "+2.0s",
+      "+3.0s",
+      "+4.0s",
+      "+5.0s",
+      "+6.0s",
+      "+7.0s",
+      "+8.0s",
+      "+9.0s",
+      "+10.0s",
+      "+11.0s"
+    ],
+    "packet_counts": [
+      7,
+      98,
+      16,
+      0,
+      9,
+      2,
+      115,
+      4,
+      98,
+      71,
+      17,
+      9
+    ],
+    "byte_counts": [
+      1307,
+      40076,
+      3182,
+      0,
+      1136,
+      84,
+      102991,
+      1308,
+      52060,
+      47567,
+      5737,
+      690
+    ]
+  },
+  "size_distribution": {
+    "labels": [
+      "< 128 B",
+      "128 - 511 B",
+      "512 - 1023 B",
+      "1024 - 1514 B",
+      "> 1514 B (Jumbo)"
+    ],
+    "counts": [
+      205,
+      65,
+      26,
+      150,
+      0
+    ],
+    "percentages": [
+      45.96,
+      14.57,
+      5.83,
+      33.63,
+      0.0
+    ]
+  },
+  "web_traffic_summary": {
+    "total_web_packets": 352,
+    "http_count": 13,
+    "https_count": 318,
+    "quic_count": 21,
+    "dns_count": 38,
+    "tls_domains": [
+      "fd.api.iris.microsoft.com",
+      "login.live.com",
+      "main.vscode-cdn.net",
+      "my.microsoftpersonalcontent.com",
+      "web.whatsapp.com"
+    ],
+    "http_methods": {},
+    "encryption_note": "Security Notice: HTTPS and QUIC application payloads are encrypted using symmetric ciphers (e.g., AES-GCM, ChaCha20-Poly1305) negotiated via TLS handshake. In NetScope, protocol metadata, Server Name Indication (SNI), packet timing, and size can be inspected, but payload contents remain cryptographically protected without authorized TLS pre-master secret key logs."
+  },
+  "unavailable_fields": []
+}

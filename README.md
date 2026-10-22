@@ -6,7 +6,7 @@ NetScope is a Python-based web application developed for the Computer Networks s
 ## 🔗 Project Links
 Try NetScope — HTTP/HTTPS Traffic Analyzer
 
-- 🌐 Live Website: https://python-based-http-https-traffic-analyzer.onrender.com/
+- 🌐 Live Website: https://python-based-http-https-traffic-analyzer.onrender.com
 - 💻 GitHub Repository: https://github.com/Hindvi124patil/Python-Based-HTTP-HTTPS-Traffic-Analyzer
 
 Explore the live application online or visit the GitHub repository to view the source code, project files, and setup instructions.

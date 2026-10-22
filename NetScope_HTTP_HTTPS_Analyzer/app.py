@@ -7,7 +7,7 @@ import os
 import sys
 import uuid
 import datetime
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, List
 from flask import Flask, render_template, request, jsonify, send_file, url_for
 from werkzeug.utils import secure_filename
 
@@ -40,8 +40,8 @@ def load_saved_college_capture():
     global active_analysis_id
 
     capture_path = os.path.join(
-        UPLOAD_FOLDER,
-        "f65b909b_college_traffic.pcapng"
+        SAMPLE_FOLDER,
+       "college_traffic.pcapng"
     )
 
     if not os.path.exists(capture_path):

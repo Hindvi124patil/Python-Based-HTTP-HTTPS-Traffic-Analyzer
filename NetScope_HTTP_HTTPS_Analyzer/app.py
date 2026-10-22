@@ -87,6 +87,11 @@ def get_current_analysis() -> Optional[Dict[str, Any]]:
 # ---------------------------------------------------------
 @app.route("/")
 def index():
+    global active_analysis_id
+
+    if college_analysis_id and college_analysis_id in analysis_store:
+        active_analysis_id = college_analysis_id
+        
     tshark_status = TSharkDetector.get_status()
     current = get_current_analysis()
     return render_template(

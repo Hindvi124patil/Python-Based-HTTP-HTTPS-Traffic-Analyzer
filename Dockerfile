@@ -18,4 +18,5 @@ ENV PORT=10000
 
 EXPOSE 10000
 COPY NetScope_HTTP_HTTPS_Analyzer/templates ./templates
+COPY NetScope_HTTP_HTTPS_Analyzer/static ./static
 CMD ["gunicorn", "--bind", "0.0.0.0:10000", "app:app"]

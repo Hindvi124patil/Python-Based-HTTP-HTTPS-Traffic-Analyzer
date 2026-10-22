@@ -1152,8 +1152,8 @@ document.addEventListener("DOMContentLoaded", () => {
             console.warn("Could not query initial status:", err);
         }
 
-        // Automatically load demo CSV on first launch for immediate visual verification
-        loadSampleDataset("csv");
+        // Do not automatically replace the default college capture with sample data
+        console.warn("Default college capture was not available from the status API.");
     }
 
     initializeApp();

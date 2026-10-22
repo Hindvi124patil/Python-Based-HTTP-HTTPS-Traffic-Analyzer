@@ -39,10 +39,10 @@ active_analysis_id: Optional[str] = None
 def load_saved_college_capture():
     global active_analysis_id
 
-   capture_path = os.path.join(
-    SAMPLE_FOLDER,
-    "college_traffic.pcapng"
-)
+    capture_path = os.path.join(
+        SAMPLE_FOLDER,
+       "college_traffic.pcapng"
+    )
     if not os.path.exists(capture_path):
         print("[Startup] College capture not found. Sample data can be loaded manually.")
         return

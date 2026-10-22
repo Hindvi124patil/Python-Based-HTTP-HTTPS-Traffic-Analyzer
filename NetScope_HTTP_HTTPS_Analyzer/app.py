@@ -428,12 +428,12 @@ def internal_error(error):
         "error": "Internal server error. Check server logs."
     }), 500
 
-
+load_saved_college_capture()
 if __name__ == "__main__":
     print("=" * 60)
     print(" NetScope — HTTP/HTTPS Traffic Analyzer")
     print(" Local Development Server Starting...")
-    load_saved_college_capture()
+    
     status = TSharkDetector.get_status()
     print(f" [TShark Engine] {status['message']}")
     print(" URL: http://127.0.0.1:5000")

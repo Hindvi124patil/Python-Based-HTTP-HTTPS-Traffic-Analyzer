@@ -36,8 +36,9 @@ analyzer = TrafficAnalyzer()
 # Analysis State Cache: stores current or multi-session analyses
 analysis_store: Dict[str, Dict[str, Any]] = {}
 active_analysis_id: Optional[str] = None
+college_analysis_id: Optional[str] = None
 def load_saved_college_capture():
-    global active_analysis_id
+    global active_analysis_id, college_analysis_id
 
     capture_path = os.path.join(
         SAMPLE_FOLDER,
@@ -53,6 +54,7 @@ def load_saved_college_capture():
         stats = analyzer.calculate_statistics(records)
 
         analysis_id = str(uuid.uuid4())
+        college_analysis_id = analysis_id
         analysis_store[analysis_id] = {
             "id": analysis_id,
             "filename": "college_traffic.pcapng",

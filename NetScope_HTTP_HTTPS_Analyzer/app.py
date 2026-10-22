@@ -17,7 +17,7 @@ from traffic_analyzer import TrafficAnalyzer, TSharkDetector, PacketRecord
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 UPLOAD_FOLDER = os.path.join(BASE_DIR, "uploads")
 OUTPUT_FOLDER = os.path.join(BASE_DIR, "outputs")
-SAMPLE_FOLDER = os.path.join(BASE_DIR, "sample_data")
+SAMPLE_FOLDER = os.path.join(BASE_DIR, "NetScope_HTTP_HTTPS_Analyzer", "sample_data")
 ALLOWED_EXTENSIONS = {"csv", "pcap", "pcapng", "cap"}
 MAX_CONTENT_LENGTH = 50 * 1024 * 1024  # 50 MB
 
